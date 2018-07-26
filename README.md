@@ -1,4 +1,4 @@
-#### Step 1 - Configure file var/main.yml
+#### Step 1 - Configure file vars/main.yml
 
 - Set the environment variables
 

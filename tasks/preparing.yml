@@ -18,13 +18,6 @@
    dest: /usr/local/bin/cfssljson
    mode: 0755
 
-- name: "copy keypair kubernetesMaster.pem"
-  template:
-   src: ../templates/kubernetesMaster.pem
-   dest: ~/kubernetesMaster.pem
-   mode: 0400
-  tags: keypair
-
 - name: "install ctop"
   shell: |
    sudo wget https://github.com/bcicen/ctop/releases/download/v0.6.0/ctop-0.6.0-linux-amd64 -O /usr/local/bin/ctop

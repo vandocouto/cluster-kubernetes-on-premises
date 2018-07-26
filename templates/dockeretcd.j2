@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+sudo docker run -d --restart always \
+-v {{ cfssl }}:/etc/ssl/certs \
+-v {{ etcdstorage }}:/var/lib/etcd \
+-p 4001:4001 \
+-p 2380:2380 \
+-p 2379:2379 \
+--name etcd quay.io/coreos/etcd:{{ etcdversion }} \
+/usr/local/bin/etcd --name={{ item }} \
+--advertise-client-urls=http://{{ item }}:2379,http://{{ item }}:4001 \
+--listen-client-urls=http://0.0.0.0:2379,http://0.0.0.0:4001 \
+--initial-advertise-peer-urls=http://{{ item }}:2380 \
+--listen-peer-urls=http://0.0.0.0:2380 \
+--initial-cluster-token=9477af68bbee1b9ae037d6fd9e7efefdd1e \
+--initial-cluster={% for host in groups['etcd'] %}{{ hostvars[host]['inventory_hostname']}}=http://{{ hostvars[host]['inventory_hostname']}}:2380{% if not loop.last %},{% endif %}{% endfor %} \
+--initial-cluster-state=new \
+--auto-tls \
+--peer-auto-tls \
+--data-dir=/var/lib/etcd

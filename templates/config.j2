@@ -1,0 +1,16 @@
+apiVersion: kubeadm.k8s.io/v1alpha1
+kind: MasterConfiguration
+token: {{ admission_token }}
+api:
+  advertiseAddress: {{ item }}
+networking:
+  podSubnet: {{ podSubnet }}
+apiServerCertSANs:
+{% for line in groups['master'] %}
+ - {{ hostvars[line]['inventory_hostname']}}
+{% endfor %}
+etcd:
+  endpoints:
+ {% for line in groups['etcd'] %}
+ - http://{{ hostvars[line]['inventory_hostname']}}:2379
+ {% endfor %}

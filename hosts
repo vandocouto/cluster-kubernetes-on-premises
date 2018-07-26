@@ -1,0 +1,17 @@
+[etcd]
+35.172.177.66
+52.55.220.92
+34.202.215.223
+
+[master]
+35.172.177.66
+52.55.220.92
+34.202.215.223
+
+[worker]
+18.207.169.9
+35.169.214.87
+
+[all:vars]
+ansible_ssh_user=ec2-user
+ansible_ssh_private_key_file=~/git/ks8-cluster/terraform/keypair/kubernetesMaster.pem

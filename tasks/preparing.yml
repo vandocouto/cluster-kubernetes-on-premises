@@ -1,0 +1,31 @@
+- name: "create directory - /etc/cfssl"
+  file:
+   path: "{{ cfssl }}"
+   state: directory
+   owner: "{{ sshuser }}"
+   group: "{{ sshuser }}"
+   mode: 0755
+
+- name: "download cfssl_linux-amd64"
+  get_url:
+   url: https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
+   dest: /usr/local/bin/cfssl
+   mode: 0755
+
+- name: "download cfssljson_linux-amd644"
+  get_url:
+   url:  https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+   dest: /usr/local/bin/cfssljson
+   mode: 0755
+
+- name: "copy keypair kubernetesMaster.pem"
+  template:
+   src: ../templates/kubernetesMaster.pem
+   dest: ~/kubernetesMaster.pem
+   mode: 0400
+  tags: keypair
+
+- name: "install ctop"
+  shell: |
+   sudo wget https://github.com/bcicen/ctop/releases/download/v0.6.0/ctop-0.6.0-linux-amd64 -O /usr/local/bin/ctop
+   sudo chmod +x /usr/local/bin/ctop

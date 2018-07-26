@@ -1,0 +1,10 @@
+- name: "[worker] - kubeadm token create"
+  shell: |
+   sudo kubeadm join {{ groups['master'][0] }}:6443 --token {{ admission_token }} --discovery-token-unsafe-skip-ca-verification
+  delegate_to: "{{ item }}"
+  with_items:
+   - "{{ groups['worker'] }}"
+  async: 300
+  poll: 0
+  ignore_errors: yes
+  tags: joinworker

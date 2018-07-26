@@ -7,7 +7,6 @@
 - open file hosts 
 
 Example:
-
 ```bash
 [etcd]
 10.0.0.10
@@ -27,7 +26,7 @@ Example:
 
 [all:vars]
 ansible_ssh_user=ec2-user
-ansible_ssh_private_key_file=~/git/ks8-cluster/terraform/keypair/kubernetesMaster.pem
+ansible_ssh_private_key_file=~/keypair/kubernetesMaster.pem
 
 ```
 

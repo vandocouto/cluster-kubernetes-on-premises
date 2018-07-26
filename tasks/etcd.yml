@@ -114,4 +114,4 @@
   register: result
   failed_when: "'Error etcdrm' in result.stdout"
   ignore_errors: True
-  tags: etcdrm
+  tags: destroyCluster

@@ -33,5 +33,5 @@ ansible_ssh_private_key_file=~/keypair/kubernetesMaster.pem
 #### Step 3 - Executing playbook Ansible
 
 ```bash
-ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts ./tasks/main.yml --skip-tags etcdrm
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts ./tasks/main.yml --skip-tags destroyCluster
 ```

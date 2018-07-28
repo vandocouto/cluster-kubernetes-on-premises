@@ -34,7 +34,7 @@
   yum: name=* state=latest
 
 - name: "[Redhat] - yum install"
-  yum: pkg={{item}} state=installed
+  yum: pkg={{ item }} state=installed
   with_items:
    - kubelet-{{ k8sversionRedhat }}
    - kubeadm-{{ k8sversionRedhat }}

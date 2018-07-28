@@ -1,15 +1,6 @@
 - name: "[Ubuntu] - update S.O"
   apt: update_cache=yes
 
-- name: "[Ubuntu] - stop iptables"
-  service: name=iptables state=stopped
-  ignore_errors: yes
-  register: iptables
-  failed_when: "'FAILED' in iptables.stderr"
-
-- name: "[Ubuntu] - disbale on iptable on boot"
-  service: name=iptables enabled=no
-
 - name: "[Ubuntu] - apt-get install"
   apt: name={{ item }} state=present
   with_items:
@@ -33,7 +24,7 @@
   apt: update_cache=yes
 
 - name: "[Ubuntu] - apt-get install kubernetes"
-  apt: name={{item}} state=present
+  apt: name={{ item }} state=present
   with_items:
    - kubelet={{ k8sversionUbuntu }}
    - kubeadm={{ k8sversionUbuntu }}

@@ -10,7 +10,7 @@ ips-master: "{{groups['master']|join(',')}}"
 ips-worker: "{{groups['worker']|join(',')}}"
 
 # ssh user
-sshuser: ec2-user
+# sshuser: root
 
 # docker
 storagedocker: /mvs

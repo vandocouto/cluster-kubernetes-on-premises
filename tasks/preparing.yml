@@ -2,8 +2,8 @@
   file:
    path: "{{ cfssl }}"
    state: directory
-   owner: "{{ sshuser }}"
-   group: "{{ sshuser }}"
+   owner: root
+   group: root
    mode: 0755
 
 - name: "download cfssl_linux-amd64"
@@ -20,5 +20,5 @@
 
 - name: "install ctop"
   shell: |
-   sudo wget https://github.com/bcicen/ctop/releases/download/v0.6.0/ctop-0.6.0-linux-amd64 -O /usr/local/bin/ctop
-   sudo chmod +x /usr/local/bin/ctop
+   wget https://github.com/bcicen/ctop/releases/download/v0.6.0/ctop-0.6.0-linux-amd64 -O /usr/local/bin/ctop
+   chmod +x /usr/local/bin/ctop

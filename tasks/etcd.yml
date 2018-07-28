@@ -61,6 +61,8 @@
   file:
    path: "{{ item.dir }}"
    state: directory
+   owner: root
+   group: root
    mode: 0755
   with_items:
    - {dir: "{{ etcd }}" }
@@ -80,7 +82,7 @@
 
 - name: "[etcd] - start etcd"
   shell: |
-   sudo sleep 10
+   sleep 10
    /etc/etcd/docker-etcd.sh
   delegate_to: "{{ item }}"
   with_items:
@@ -102,12 +104,12 @@
 
 - name: "[etcd] - docker etcd rm"
   shell: |
-   sudo kubeadm reset -f
-   sudo docker rm etcd -f
-   sudo rm {{ etcd }}/docker-etcd.sh
-   sudo docker rm $(docker ps -qa) -f
-   sudo rm -rf {{ etcdstorage }}/*
-   sudo rm -rf /var/lib/etcd/*
+   kubeadm reset -f
+   docker rm etcd -f
+   rm {{ etcd }}/docker-etcd.sh
+   docker rm $(docker ps -qa) -f
+   rm -rf {{ etcdstorage }}/*
+   rm -rf /var/lib/etcd/*
   delegate_to: "{{ item }}"
   with_items:
    - "{{ groups['etcd'] }}"

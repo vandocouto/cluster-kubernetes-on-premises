@@ -7,24 +7,6 @@
     policy: targeted
     state: permissive
 
-- name: "[Redhat] - be sure firewalld is disabled"
-  systemd: name=firewalld enabled=no
-  ignore_errors: yes
-  register: result
-  failed_when: "'firewalld not installed' in result.stdout"
-
-- name: "[Redhat] - stop iptables"
-  service: name=iptables state=stopped
-  ignore_errors: yes
-  register: result
-  failed_when: "'iptables not installed' in result.stdout"
-
-- name: "[Redhat] - be sure firewalld is stopped"
-  systemd: name=firewalld state=stopped
-  ignore_errors: yes
-  register: result
-  failed_when: "'firewalld not installed' in result.stdout"
-
 - name: "[Redhat] - yum install"
   yum: pkg={{item}} state=installed
   with_items:

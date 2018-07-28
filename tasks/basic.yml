@@ -3,18 +3,6 @@
     flush: true
   poll: 0
 
-- name: "sysctl.conf"
-  sysctl:
-   name: "{{item}}"
-   value: 1
-   sysctl_set: yes
-  with_items:
-   - net.bridge.bridge-nf-call-iptables
-   - net.bridge.bridge-nf-call-ip6tables
-  ignore_errors: yes
-  register: sysctl
-  failed_when: "'Erro Sysctl' in sysctl.stdout"
-
 - name: "Remove swapfile from /etc/fstab"
   mount:
     name: swap
@@ -24,12 +12,6 @@
 - name: "Disable swap"
   command: swapoff -a
   when: ansible_swaptotal_mb > 0
-
-- name: "rc.local"
-  lineinfile:
-   path: /etc/rc.local
-   insertbefore: 'exit 0'
-   line: 'iptables -F'
 
 - name: "Changing perm of /etc/rc.local +x"
   file:

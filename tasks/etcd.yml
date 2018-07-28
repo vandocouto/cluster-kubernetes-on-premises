@@ -90,7 +90,7 @@
   when: dockeretcd.changed
   register: result
   failed_when: "'Error start etcd' in result.stdout"
-  async: 60
+  async: 300
   poll: 1
 
 - name: "[etcd] - check cluster etcd"

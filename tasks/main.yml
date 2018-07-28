@@ -31,3 +31,6 @@
 
     - import_tasks: worker.yml
       tags: worker
+
+    - import_tasks: destroyCluster.yml
+      tags: destroyCluster

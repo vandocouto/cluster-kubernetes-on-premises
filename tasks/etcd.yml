@@ -101,19 +101,3 @@
   register: result
   failed_when: "'true' not in result.stdout"
   tags: checketcd
-
-- name: "[etcd] - docker etcd rm"
-  shell: |
-   kubeadm reset -f
-   docker rm etcd -f
-   rm {{ etcd }}/docker-etcd.sh
-   docker rm $(docker ps -qa) -f
-   rm -rf {{ etcdstorage }}/*
-   rm -rf /var/lib/etcd/*
-  delegate_to: "{{ item }}"
-  with_items:
-   - "{{ groups['etcd'] }}"
-  register: result
-  failed_when: "'Error etcdrm' in result.stdout"
-  ignore_errors: True
-  tags: destroyCluster

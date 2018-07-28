@@ -1,0 +1,19 @@
+- name: "[master] - destroy kubernetes"
+  shell: |
+   kubeadm reset -f
+  delegate_to: "{{ item }}"
+  with_items:
+   - "{{ groups['master'] }}"
+  ignore_errors: True
+
+- name: "[etcd] - destroy etcd"
+  shell: |
+   docker rm etcd -f
+   rm {{ etcd }}/docker-etcd.sh
+   docker rm $(docker ps -qa) -f
+   rm -rf {{ etcdstorage }}/*
+   rm -rf /var/lib/etcd/*
+  delegate_to: "{{ item }}"
+  with_items:
+   - "{{ groups['etcd'] }}"
+  ignore_errors: True

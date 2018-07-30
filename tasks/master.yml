@@ -14,7 +14,7 @@
   shell: kubeadm init --config=/etc/kubernetes/config.yml
   delegate_facts: True
   delegate_to: "{{ groups['master'][0] }}"
-  async: 300
+  async: 600
   poll: 1
 
 - name: "[master] - compress directory /etc/kubernetes"
@@ -57,7 +57,7 @@
   with_items:
    - "{{ groups['master'] }}"
   when: "'item' != inventory_hostname"
-  async: 300
+  async: 600
   poll: 0
 
 - name: "[master] - weave network"

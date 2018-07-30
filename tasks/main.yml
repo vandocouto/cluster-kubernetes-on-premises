@@ -32,5 +32,8 @@
     - import_tasks: worker.yml
       tags: worker
 
+    - import_tasks: keepalived.yml
+      tags: keepalived
+
     - import_tasks: destroyCluster.yml
       tags: destroyCluster

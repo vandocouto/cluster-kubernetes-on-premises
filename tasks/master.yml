@@ -67,7 +67,7 @@
   delegate_facts: True
   delegate_to: "{{ groups['master'][0] }}"
   async: 45
-  poll: 0
+  poll: 1
 
 - name: "[master] - scope.yaml"
   template:

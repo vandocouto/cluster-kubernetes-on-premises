@@ -9,6 +9,7 @@ apiServerCertSANs:
 {% for line in groups['master'] %}
  - {{ hostvars[line]['inventory_hostname']}}
 {% endfor %}
+ - {{ virtualip }}
 etcd:
   endpoints:
  {% for line in groups['etcd'] %}

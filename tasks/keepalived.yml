@@ -1,0 +1,50 @@
+- name: "[keepalibed] - kubernetes check_apiserver.sh"
+  template:
+   src: ../templates/check_apiserver.sh
+   dest: /etc/keepalived/check_apiserver.sh
+   owner: root
+   group: root
+   mode: 0755
+  delegate_to: "{{ item }}"
+  with_items:
+   - "{{ groups['master'] }}"
+  tags: chkapiserver
+
+- name: "[keepalibed] - kubernetes keepalvied.conf - BACKUP"
+  template:
+   src: ../templates/keepalived.conf.j2
+   dest: /etc/keepalived/keepalived.conf
+   owner: root
+   group: root
+   mode: 0644
+   backup: yes
+  delegate_to: "{{ item }}"
+  with_items:
+   - "{{ groups['master'] }}"
+  tags: chkapiserver
+
+- name: "[keepalibed] - kubernetes keepalvied.conf - MASTER"
+  template:
+   src: ../templates/keepalived.conf.j2
+   dest: /etc/keepalived/keepalived.conf
+   owner: root
+   group: root
+   mode: 0644
+   backup: yes
+  delegate_to: "{{ item }}"
+  vars:
+    - state: MASTER
+  with_items:
+   - "{{ groups['master'][0] }}"
+  tags: chkapiserver
+
+- name: "[keepalived] - enable service"
+  systemd:
+    name: keepalived
+    enabled: yes
+
+- name: "[keepalived] - start service"
+  service:
+   name: keepalived
+   state: started
+

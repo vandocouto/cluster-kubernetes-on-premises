@@ -9,9 +9,6 @@ ips-etcd: "{{groups['etcd']|join(',')}}"
 ips-master: "{{groups['master']|join(',')}}"
 ips-worker: "{{groups['worker']|join(',')}}"
 
-# ssh user
-# sshuser: root
-
 # docker
 storagedocker: /mvs
 docker-version:
@@ -29,6 +26,13 @@ admission_token: 3e6035.191009b3012b14db
 etcdversion: v3.3.8
 etcd: /etc/etcd
 etcdstorage: /var/lib/etcd-cluster
+
+# keepalived
+interfacename: enp0s8
+priority: 51
+keeppass: p7S5gkT719R
+state: BACKUP
+virtualip: 192.168.56.200
 
 
 

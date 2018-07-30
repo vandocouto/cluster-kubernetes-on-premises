@@ -16,6 +16,7 @@
    - yum-utils
    - net-tools
    - telnet
+   - keepalived
 
 - name: "[Redhat] - enable repository docker"
   shell: |

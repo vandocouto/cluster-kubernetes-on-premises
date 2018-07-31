@@ -1,3 +1,9 @@
+- name: "sysctl - net.bridge.bridge-nf-call-iptables"
+  sysctl:
+   name: net.bridge.bridge-nf-call-iptables
+   value: 1
+   sysctl_set: yes
+
 - name: "[master] - kubernetes master config.j2"
   template:
    src: ../templates/config.j2
@@ -11,11 +17,12 @@
   tags: configmaster
 
 - name: "[master] - kubeadm master"
-  shell: kubeadm init --config=/etc/kubernetes/config.yml
+  shell: kubeadm init --config=/etc/kubernetes/config.yml --ignore-preflight-errors=all
   delegate_facts: True
   delegate_to: "{{ groups['master'][0] }}"
-  async: 600
+  async: 1800
   poll: 1
+  retries: 3
 
 - name: "[master] - compress directory /etc/kubernetes"
   archive:
@@ -25,12 +32,18 @@
   delegate_to: "{{ groups['master'][0] }}"
   tags: compress
 
+- name: "kubeadm | Check if kubeadm has already configuration"
+  stat:
+    path: /etc/kubernetes/pki.tgz
+  register: kubeadm
+
 - name: "[master] - fetch - file kubernetes.tgz"
   fetch:
    src: /etc/kubernetes/pki.tgz
    dest: /tmp/fetched
   delegate_facts: True
   delegate_to: "{{ groups['master'][0] }}"
+  retries: 3
   tags: fetch
 
 - name: "[master] - copy kubernetes.tgz"
@@ -53,12 +66,10 @@
 
 - name: "[master] - kubeadm master - ALL"
   shell: kubeadm init --config=/etc/kubernetes/config.yml
-  delegate_to: "{{ item }}"
-  with_items:
-   - "{{ groups['master'] }}"
-  when: "'item' != inventory_hostname"
-  async: 600
-  poll: 0
+  when: inventory_hostname in groups['master'] and not kubeadm.stat.exists
+  async: 1800
+  poll: 1
+  retries: 3
 
 - name: "[master] - weave network"
   shell: |

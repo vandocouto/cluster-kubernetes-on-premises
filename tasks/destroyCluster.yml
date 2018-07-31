@@ -13,7 +13,13 @@
    docker rm $(docker ps -qa) -f
    rm -rf {{ etcdstorage }}/*
    rm -rf /var/lib/etcd/*
+   rm -rf /etc/kubernetes/pki.tgz
   delegate_to: "{{ item }}"
   with_items:
    - "{{ groups['etcd'] }}"
   ignore_errors: True
+
+- name: "[keepalived] - start service"
+  service:
+   name: keepalived
+   state: stopped

@@ -67,7 +67,7 @@
 - name: "[master] - kubeadm master - ALL"
   shell: kubeadm init --config=/etc/kubernetes/config.yml
   when: inventory_hostname in groups['master'] and not kubeadm.stat.exists
-  async: 1800
+  async: 3600
   poll: 1
   retries: 3
 

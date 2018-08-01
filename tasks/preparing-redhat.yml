@@ -7,7 +7,7 @@
     policy: targeted
     state: permissive
 
-- name: "[Redhat] - yum install"
+- name: "[Redhat] - yum install packages"
   yum: pkg={{item}} state=installed
   with_items:
    - wget
@@ -17,6 +17,9 @@
    - net-tools
    - telnet
    - keepalived
+  async: 1800
+  poll: 1
+  retries: 3
 
 - name: "[Redhat] - enable repository docker"
   shell: |
@@ -42,6 +45,9 @@
    - kubelet-{{ k8sversionRedhat }}
    - kubeadm-{{ k8sversionRedhat }}
    - kubectl-{{ k8sversionRedhat }}
+  async: 1800
+  poll: 1
+  retries: 3
   tags: installkube
 
 - name: "[Redhat] - enable service"

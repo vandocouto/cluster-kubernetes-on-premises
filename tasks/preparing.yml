@@ -11,7 +11,7 @@
    url: https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
    dest: /usr/local/bin/cfssl
    mode: 0755
-  async: 300
+  async: 1800
   poll: 1
 
 - name: "download cfssljson_linux-amd644"
@@ -19,7 +19,7 @@
    url:  https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
    dest: /usr/local/bin/cfssljson
    mode: 0755
-  async: 300
+  async: 1800
   poll: 1
 
 - name: "check if ctop exist"

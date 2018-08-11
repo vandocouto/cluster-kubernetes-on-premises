@@ -75,8 +75,7 @@
   shell: |
     kubectl --kubeconfig=/etc/kubernetes/admin.conf \
     apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
-  delegate_facts: True
-  delegate_to: "{{ groups['master'][0] }}"
+  when: inventory_hostname in groups['master'] and kubeadm.stat.exists
   async: 45
   poll: 1
 
@@ -84,8 +83,7 @@
   template:
    src: ../templates/scope.yaml
    dest: /etc/kubernetes/scope.yaml
-  delegate_facts: True
-  delegate_to: "{{ groups['master'][0] }}"
+  when: inventory_hostname in groups['master'] and kubeadm.stat.exists
   tags: scopeyaml
 
 - name: "[master] - scope deployment"
@@ -102,16 +100,14 @@
   template:
    src: ../templates/kubernetes-dashboard.yaml
    dest: /etc/kubernetes/kubernetes-dashboard.yaml
-  delegate_facts: True
-  delegate_to: "{{ groups['master'][0] }}"
+  when: inventory_hostname in groups['master'] and kubeadm.stat.exists
   tags: dashboardyaml
 
 - name: "[master] - dashboard deployment"
   shell: |
    kubectl --kubeconfig=/etc/kubernetes/admin.conf \
    apply -f /etc/kubernetes/kubernetes-dashboard.yaml
-  delegate_facts: True
-  delegate_to: "{{ groups['master'][0] }}"
+  when: inventory_hostname in groups['master'] and kubeadm.stat.exists
   async: 45
   poll: 0
   tags: dashboarddeploy

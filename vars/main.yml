@@ -28,10 +28,10 @@ etcd: /etc/etcd
 etcdstorage: /var/lib/etcd-cluster
 
 # keepalived
-interfacename: enp0s8
+interfacename: enp0s3
 priority: 51
 keeppass: p7S5gkT719R
-state: BACKUP
+state: MASTER
 virtualip: 192.168.56.200
 
 

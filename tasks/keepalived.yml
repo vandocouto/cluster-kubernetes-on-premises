@@ -9,7 +9,7 @@
   with_items:
    - "{{ groups['master'] }}"
 
-- name: "[keepalibed] - kubernetes keepalvied.conf - BACKUP"
+- name: "[keepalibed] - kubernetes keepalvied.conf"
   template:
    src: ../templates/keepalived.conf.j2
    dest: /etc/keepalived/keepalived.conf
@@ -21,27 +21,19 @@
   with_items:
    - "{{ groups['master'] }}"
 
-- name: "[keepalibed] - kubernetes keepalvied.conf - MASTER"
-  template:
-   src: ../templates/keepalived.conf.j2
-   dest: /etc/keepalived/keepalived.conf
-   owner: root
-   group: root
-   mode: 0644
-   backup: yes
-  delegate_to: "{{ item }}"
-  vars:
-    - state: MASTER
-  with_items:
-   - "{{ groups['master'][0] }}"
-
 - name: "[keepalived] - enable service"
   systemd:
     name: keepalived
     enabled: yes
+  delegate_to: "{{ item }}"
+  with_items:
+   - "{{ groups['master'] }}"
 
 - name: "[keepalived] - start service"
   service:
    name: keepalived
    state: started
+  delegate_to: "{{ item }}"
+  with_items:
+   - "{{ groups['master'] }}"
 

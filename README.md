@@ -1,13 +1,12 @@
 #### Step 1 - Configure file vars/main.yml
 
 ```bash
----
-# certificate
+# certificate cfssl
 expiry: 24000h
-corp: EMC
+corp: corporation
 cfssl: /etc/cfssl
 
-# ips
+# ips (do not change)
 ips-etcd: "{{groups['etcd']|join(',')}}"
 ips-master: "{{groups['master']|join(',')}}"
 ips-worker: "{{groups['worker']|join(',')}}"
@@ -20,7 +19,7 @@ docker-version:
 k8sversionUbuntu: 1.11.1-00
 k8sversionRedhat: 1.11.1-0*
 podSubnet: 10.0.0.0/16
-# create token - run command
+# create TOKEN - run command
 # python -c 'import random; print "%0x.%0x" % (random.SystemRandom().getrandbits(3*8), random.SystemRandom().getrandbits(
   #8*8))'
 admission_token: 3e6035.191009b3012b14db
@@ -31,10 +30,10 @@ etcd: /etc/etcd
 etcdstorage: /var/lib/etcd-cluster
 
 # keepalived
-interfacename: enp0s8
+interfacename: enp0s3
 priority: 51
 keeppass: p7S5gkT719R
-state: BACKUP
+state: MASTER
 virtualip: 192.168.56.200
 ```
 

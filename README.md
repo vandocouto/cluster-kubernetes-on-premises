@@ -1,4 +1,4 @@
-![Alerta - Slack](img/kubernetes-1.jpg)
+![Alerta - Slack](img/images.png)
 
 # Create Cluster Kubernetes - On Premises
 **Can be deployed on KVM, VirtualBox, VMware or OpenStack**

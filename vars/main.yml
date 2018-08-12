@@ -1,17 +1,13 @@
 ---
 # certificate cfssl
 expiry: 24000h
-corp: corporation
+corp: kubernetes
 cfssl: /etc/cfssl
 
 # ips (do not change)
 ips-etcd: "{{groups['etcd']|join(',')}}"
 ips-master: "{{groups['master']|join(',')}}"
 ips-worker: "{{groups['worker']|join(',')}}"
-
-# docker
-storagedocker: /mvs
-docker-version:
 
 # kubernetes
 k8sversionUbuntu: 1.11.1-00
@@ -33,6 +29,3 @@ priority: 51
 keeppass: p7S5gkT719R
 state: MASTER
 virtualip: 192.168.56.200
-
-
-

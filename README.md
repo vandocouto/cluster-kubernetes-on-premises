@@ -1,6 +1,8 @@
 # Create Cluster Kubernetes - On Premises
 **Can be deployed on KVM, VirtualBox, VMware or OpenStack**
 
+![Alerta - Slack](img/kubernetes.png)
+
 ### Supported Linux Distributions
     
    * Ubuntu 16
@@ -64,7 +66,7 @@ virtualip: 192.168.56.200
 
 - Set the environment variables
 
-#### Step 2 - Inventory 
+### Step 2 - Inventory 
 
 - open file hosts 
 
@@ -89,7 +91,7 @@ ansible_ssh_user=administrator
 ansible_ssh_private_key_file=~/kubernetes.pem
 ```
 
-#### Step 3 - Executing playbook Ansible
+### Step 3 - Executing playbook Ansible
 
 ```bash
 ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts ./tasks/main.yml --skip-tags destroyCluster

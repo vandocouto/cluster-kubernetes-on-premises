@@ -10,13 +10,11 @@
    - {dest: "{{ cfssl }}",kubernetes-csr.json,  src: kubernetes-csr.json}
   delegate_facts: True
   delegate_to: "{{ groups['etcd'][0] }}"
-  tags: files-cfssl
 
 - name: "[etcd] - cfssl - ca"
   shell: /usr/local/bin/cfssl gencert -initca "{{cfssl}}"/ca-csr.json | /usr/local/bin/cfssljson -bare {{cfssl}}/ca
   delegate_facts: True
   delegate_to: "{{ groups['etcd'][0] }}"
-  tags: cfsslca
 
 - name: "[etcd] - certs - ssl"
   shell: |
@@ -29,7 +27,6 @@
     -profile=kubernetes kubernetes-csr.json | /usr/local/bin/cfssljson -bare kubernetes
   delegate_facts: True
   delegate_to: "{{ groups['etcd'][0] }}"
-  tags: certs
 
 - name: "[etcd] - fetch - files kubernetes csr key pem"
   fetch:
@@ -43,7 +40,6 @@
    - {kaypair: "ca.pem"}
   delegate_facts: True
   delegate_to: "{{ groups['etcd'][0] }}"
-  tags: kubernetes-fetch
 
 - name: "[etcd] - copy keypairs"
   template:
@@ -55,7 +51,6 @@
    - {kaypair: "kubernetes-key.pem"}
    - {kaypair: "kubernetes.pem"}
    - {kaypair: "ca.pem"}
-  tags: copy-kaypair
 
 - name: "[etcd] - create directory"
   file:
@@ -100,4 +95,3 @@
    - "{{ groups['etcd'] }}"
   register: result
   failed_when: "'true' not in result.stdout"
-  tags: checketcd

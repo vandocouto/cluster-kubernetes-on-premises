@@ -12,14 +12,15 @@
   with_items:
    - wget
    - curl
-   - http://mirror.centos.org/centos/7/extras/x86_64/Packages/container-selinux-2.66-1.el7.noarch.rpm
    - yum-utils
    - net-tools
    - telnet
    - keepalived
+   - http://mirror.centos.org/centos/7/extras/x86_64/Packages/container-selinux-2.66-1.el7.noarch.rpm
   async: 1800
   poll: 1
   retries: 3
+  ignore_errors: yes
 
 - name: "[Redhat] - enable repository docker"
   shell: |

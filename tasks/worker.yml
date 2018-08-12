@@ -4,5 +4,4 @@
   when: inventory_hostname in groups['worker']
   async: 300
   poll: 1
-  ignore_errors: yes
   tags: joinworker

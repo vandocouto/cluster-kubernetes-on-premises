@@ -19,7 +19,7 @@
    - "{{ groups['etcd'] }}"
   ignore_errors: True
 
-- name: "[keepalived] - start service"
+- name: "[keepalived] - stopped service"
   service:
    name: keepalived
    state: stopped

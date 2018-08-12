@@ -1,4 +1,4 @@
-![Alerta - Slack](img/images.png)
+![Kubernetes](img/images.png)
 
 # Create Cluster Kubernetes - On Premises
 **Can be deployed on KVM, VirtualBox, VMware or OpenStack**
@@ -24,6 +24,8 @@ To deploy the cluster you can use:
    * weave v2.4.0
     
 ### Step 1 - Configure file vars/main.yml
+
+- Set the environment variables
 
 ```bash
 # certificate cfssl -SSL
@@ -64,8 +66,6 @@ state: MASTER
 virtualip: 192.168.56.200
 ```
 
-- Set the environment variables
-
 ### Step 2 - Inventory 
 
 - open file hosts 
@@ -95,4 +95,14 @@ ansible_ssh_private_key_file=~/kubernetes.pem
 
 ```bash
 ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts ./tasks/main.yml --skip-tags destroyCluster
+```
+
+<hr>
+
+## NOTE:
+
+### Destroy Cluster Kubernetes 
+
+```bash
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts ./tasks/main.yml --tags destroyCluster
 ```

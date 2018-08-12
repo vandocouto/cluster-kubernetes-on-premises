@@ -1,6 +1,5 @@
 # Create Cluster Kubernetes - On Premises
-**Can be deployed on KVM, VirtaulBox, VMware or OpenStack**
-
+**Can be deployed on KVM, VirtualBox, VMware or OpenStack**
 
 ### Pre-requisites
 
@@ -10,7 +9,15 @@
     * CentOS >= 7
     * RedHat >= 7
 
-Installation
+### Installation
+
+To deploy the cluster you can use :
+
+* Orquetrations
+
+    * ansible 2.6.1
+    * python version = 2.7.12 
+    
 
 #### Step 1 - Configure file vars/main.yml
 

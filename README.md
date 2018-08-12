@@ -1,3 +1,14 @@
+# Create Cluster Kubernetes for On Premises (KVM - VMware)
+
+### Pre-requisites
+
+* System Operations:
+    Ubuntu >= 16 
+    CentOS >= 7
+    RedHat >= 7
+
+Installation
+
 #### Step 1 - Configure file vars/main.yml
 
 ```bash

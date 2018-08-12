@@ -12,6 +12,7 @@
    - curl
    - wget
    - htop
+   - keepalived
   tags: apt-get
 
 - name: "install docker-ce"

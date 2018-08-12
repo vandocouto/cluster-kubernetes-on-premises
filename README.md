@@ -11,21 +11,20 @@
 To deploy the cluster you can use:
 
    * Ansible 2.6.1
-   * Python version = 2.7.12 
+   * Python version 2.7.12 
     
 ### Supported Components
 
-   * kubernetes v1.11.1
    * etcd v3.3.8
    * docker 18.06.0-ce 
-   * Network Plugin
-   * weave v2.4.0
    * keepalived v1.3.5
+   * kubernetes v1.11.1
+   * weave v2.4.0
     
 ### Step 1 - Configure file vars/main.yml
 
 ```bash
-# certificate cfssl
+# certificate cfssl -SSL
 expiry: 24000h
 corp: corporation
 cfssl: /etc/cfssl
@@ -43,7 +42,7 @@ docker-version:
 k8sversionUbuntu: 1.11.1-00
 k8sversionRedhat: 1.11.1-0*
 podSubnet: 10.0.0.0/16
-# create TOKEN - run command
+# NOTE: create TOKEN - run command
 # python -c 'import random; print "%0x.%0x" % (random.SystemRandom().getrandbits(3*8), random.SystemRandom().getrandbits(
   #8*8))'
 admission_token: 3e6035.191009b3012b14db
@@ -53,11 +52,13 @@ etcdversion: v3.3.8
 etcd: /etc/etcd
 etcdstorage: /var/lib/etcd-cluster
 
-# keepalived
+# NOTE: Configure keepalived
 interfacename: enp0s3
+# Default
 priority: 51
 keeppass: p7S5gkT719R
 state: MASTER
+# IP VIP
 virtualip: 192.168.56.200
 ```
 

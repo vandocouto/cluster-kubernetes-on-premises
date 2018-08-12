@@ -38,10 +38,6 @@ ips-etcd: "{{groups['etcd']|join(',')}}"
 ips-master: "{{groups['master']|join(',')}}"
 ips-worker: "{{groups['worker']|join(',')}}"
 
-# docker
-storagedocker: /mvs
-docker-version:
-
 # kubernetes
 k8sversionUbuntu: 1.11.1-00
 k8sversionRedhat: 1.11.1-0*

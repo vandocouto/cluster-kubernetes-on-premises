@@ -29,8 +29,8 @@
     - import_tasks: master.yml
       tags: master
 
-    - import_tasks: keepalived.yml
-      tags: keepalived
+    #- import_tasks: keepalived.yml
+    #  tags: keepalived
 
     - import_tasks: worker.yml
       tags: worker

@@ -93,6 +93,16 @@ ansible_ssh_private_key_file=~/kubernetes.pem
 ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts ./tasks/main.yml --skip-tags destroyCluster
 ```
 
+### Display Dashboard Kubernetes
+
+http://IP-VIP:30000
+![Dashboard Kubernetes](img/dashboard1.png)
+
+### Display Weave Scope
+
+http://IP-VIP:30001
+![Weave Scope](img/weave.png)
+
 <hr>
 
 ## NOTE:

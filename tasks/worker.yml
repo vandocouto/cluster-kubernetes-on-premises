@@ -2,5 +2,4 @@
   shell: |
    sudo kubeadm join {{ virtualip }}:6443 --token {{ admission_token }} --discovery-token-unsafe-skip-ca-verification
   when: inventory_hostname in groups['worker']
-  async: 900
-  poll: 1
+  poll: 0

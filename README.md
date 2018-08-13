@@ -5,8 +5,8 @@
 
 ### Supported Linux Distributions
     
-   * Ubuntu 16
    * CentOS/RHEL 7
+   * Ubuntu 16
     
 ### Installation
 

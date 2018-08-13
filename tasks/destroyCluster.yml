@@ -3,7 +3,7 @@
    kubeadm reset -f
   ignore_errors: True
 
-- name: "[destroy] - destroy etcd"
+- name: "[destroy] - destroy pki.tgz"
   shell: |
    rm -rf /etc/kubernetes/pki.tgz
   delegate_facts: True

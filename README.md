@@ -67,9 +67,9 @@ virtualip: 192.168.56.200
 - open file hosts 
 - add ips or fqdn to etcd, master and worker.
 
-    * number minimum 3 nodes for etcd
-    * number minimum 2 nodes for master
-    * number minimum 1 node for worker
+    * number minimum: 3 nodes for etcd
+    * number minimum: 2 nodes for master
+    * number minimum: 1 node for worker
  
 Example:
 ```bash

@@ -5,7 +5,9 @@
    owner: root
    group: root
    mode: 0755
-  when: inventory_hostname in groups['master']
+  delegate_to: "{{ item }}"
+  with_items:
+   - "{{ groups['master'] }}"
 
 - name: "[keepalibed] - kubernetes keepalvied.conf"
   template:
@@ -15,7 +17,9 @@
    group: root
    mode: 0644
    backup: yes
-  when: inventory_hostname in groups['master']
+  delegate_to: "{{ item }}"
+  with_items:
+   - "{{ groups['master'] }}"
 
 - name: "[keepalived] - enable service"
   systemd:

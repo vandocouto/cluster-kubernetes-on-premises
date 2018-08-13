@@ -14,7 +14,6 @@
   delegate_to: "{{ item }}"
   with_items:
    - "{{ groups['master'] }}"
-  tags: configmaster
 
 - name: "[master] - kubeadm master"
   shell: kubeadm init --config=/etc/kubernetes/config.yml --ignore-preflight-errors=all
@@ -30,7 +29,6 @@
    dest: /etc/kubernetes/pki.tgz
   delegate_facts: True
   delegate_to: "{{ groups['master'][0] }}"
-  tags: compress
 
 - name: "kubeadm | Check if kubeadm has already configuration"
   stat:
@@ -44,25 +42,18 @@
   delegate_facts: True
   delegate_to: "{{ groups['master'][0] }}"
   retries: 3
-  tags: fetch
 
 - name: "[master] - copy kubernetes.tgz"
   copy:
    src: /tmp/fetched/{{ groups['master'][0] }}/etc/kubernetes/pki.tgz
    dest: /tmp/pki.tgz
-  delegate_to: "{{ item }}"
-  with_items:
-   - "{{ groups['master'] }}"
-  tags: copy-kubernetestgz
+  when: inventory_hostname in groups['master']
 
 - name: "[master] - extract pki.tgz into /ec/kubernetes/pki"
   shell: |
    sudo tar -xvf /tmp/pki.tgz -C /etc/kubernetes
    sudo rm -rf /etc/kubernetes/pki/apiserver.*
-  delegate_to: "{{ item }}"
-  with_items:
-   - "{{ groups['master'] }}"
-  tags: clean
+  when: inventory_hostname in groups['master']
 
 - name: "[master] - kubeadm master - ALL"
   shell: kubeadm init --config=/etc/kubernetes/config.yml
@@ -76,15 +67,13 @@
     kubectl --kubeconfig=/etc/kubernetes/admin.conf \
     apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
   when: inventory_hostname in groups['master'] and kubeadm.stat.exists
-  async: 900
-  poll: 1
+  poll: 0
 
 - name: "[master] - scope.yaml"
   template:
    src: ../templates/scope.yaml
    dest: /etc/kubernetes/scope.yaml
   when: inventory_hostname in groups['master'] and kubeadm.stat.exists
-  tags: scopeyaml
 
 - name: "[master] - scope deployment"
   shell: |
@@ -92,31 +81,23 @@
    apply --namespace=weave -f /etc/kubernetes/scope.yaml
   delegate_facts: True
   delegate_to: "{{ groups['master'][0] }}"
-  async: 900
-  poll: 1
-  tags: scopedeploy
+  poll: 0
 
 - name: "[master] - dashboard.yaml"
   template:
    src: ../templates/kubernetes-dashboard.yaml
    dest: /etc/kubernetes/kubernetes-dashboard.yaml
   when: inventory_hostname in groups['master'] and kubeadm.stat.exists
-  tags: dashboardyaml
 
 - name: "[master] - dashboard deployment"
   shell: |
    kubectl --kubeconfig=/etc/kubernetes/admin.conf \
    apply -f /etc/kubernetes/kubernetes-dashboard.yaml
   when: inventory_hostname in groups['master'] and kubeadm.stat.exists
-  async: 900
-  poll: 1
-  tags: dashboarddeploy
+  poll: 0
 
 - name: "[master] - export kubeconfig"
   lineinfile:
    dest: ~/.bashrc
    line: export KUBECONFIG=/etc/kubernetes/admin.conf
-  delegate_to: "{{ item }}"
-  with_items:
-   - "{{ groups['master'] }}"
-  tags: export
+  when: inventory_hostname in groups['master']

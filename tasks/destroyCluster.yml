@@ -1,9 +1,6 @@
 - name: "[master] - destroy kubernetes"
   shell: |
    kubeadm reset -f
-  delegate_to: "{{ item }}"
-  with_items:
-   - "{{ groups['master'] }}"
   ignore_errors: True
 
 - name: "[etcd] - destroy etcd"
@@ -23,3 +20,5 @@
   service:
    name: keepalived
    state: stopped
+  ignore_errors: True
+  when: inventory_hostname in groups['master']

@@ -31,7 +31,6 @@
 
 - name: "[keepalived] - start service"
   service:
-   name: started keepalived
+   name: keepalived
    state: started
   when: inventory_hostname in groups['master']
-

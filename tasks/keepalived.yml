@@ -11,13 +11,14 @@
 
 - name: "[keepalibed] - kubernetes keepalvied.conf"
   template:
-   src: ../templates/keepalived.conf.j2
-   dest: /etc/keepalived/keepalived.conf
-   owner: root
-   group: root
-   mode: 0644
-   backup: yes
+    src: ../templates/keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
   delegate_to: "{{ item }}"
+  notify: restart keepalived
   with_items:
    - "{{ groups['master'] }}"
 
@@ -30,6 +31,6 @@
 - name: "[keepalived] - start service"
   service:
    name: keepalived
-   state: started
+   state: restarted
   when: inventory_hostname in groups['master']
 

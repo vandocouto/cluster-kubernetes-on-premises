@@ -23,12 +23,9 @@
   ignore_errors: yes
 
 - name: "[Redhat] - enable repository docker"
-  yum_repository:
-    name: docker-ce
-    description: Docker Repository
-    baseurl: https://download.docker.com/linux/centos/docker-ce.repo
-    enabled: yes
-  tags: install-docker
+  shell: |
+   yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+   yum makecache fast
 
 - name: "[Redhat] - install docker-ce"
   yum: pkg={{item}} state=installed

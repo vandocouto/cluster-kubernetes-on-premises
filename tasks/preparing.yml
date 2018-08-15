@@ -16,7 +16,7 @@
 
 - name: "download cfssljson_linux-amd644"
   get_url:
-   url:  https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+   url: https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
    dest: /usr/local/bin/cfssljson
    mode: 0755
   async: 1800

@@ -33,7 +33,5 @@
   service:
    name: started keepalived
    state: started
-  delegate_to: "{{ item }}"
-  with_items:
-   - "{{ groups['master'] }}"
+  when: inventory_hostname in groups['master']
 

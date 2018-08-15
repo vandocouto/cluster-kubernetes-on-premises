@@ -61,11 +61,6 @@
    rm -rf /etc/kubernetes/pki/apiserver.*
   when: inventory_hostname in groups['master']
 
-- name: "[master] - kubeadm master - ALL"
-  shell: kubeadm init --config=/etc/kubernetes/config.yml --ignore-preflight-errors=all
-  when: inventory_hostname in groups['master'] and not kubeadm.stat.exists
-  poll: 0
-
 - name: "[master] - weave network"
   shell: |
    kubectl --kubeconfig=/etc/kubernetes/admin.conf \
@@ -102,4 +97,9 @@
    apply -f /etc/kubernetes/kubernetes-dashboard.yaml
   delegate_facts: True
   delegate_to: "{{ groups['master'][0] }}"
+  poll: 0
+
+- name: "[master] - kubeadm master - ALL"
+  shell: kubeadm init --config=/etc/kubernetes/config.yml --ignore-preflight-errors=all
+  when: inventory_hostname in groups['master'] and not kubeadm.stat.exists
   poll: 0

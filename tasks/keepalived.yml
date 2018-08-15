@@ -30,7 +30,7 @@
 
 - name: "[keepalived] - start service"
   service:
-   name: keepalived
+   name: restart keepalived
    state: restarted
   when: inventory_hostname in groups['master']
 

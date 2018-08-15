@@ -25,16 +25,15 @@
   systemd:
     name: keepalived
     enabled: yes
-  when: inventory_hostname in groups['master']
+  delegate_to: "{{ item }}"
+  with_items:
+   - "{{ groups['master'] }}"
 
 - name: "[keepalived] - start service"
-  shell: |
-    systemctl restart keepalived
-  when: inventory_hostname in groups['master']
-
-#- name: "[keepalived] - start service"
-#  service:
-#   name: restart keepalived
-#   state: restarted
-#  when: inventory_hostname in groups['master']
+  service:
+   name: restart keepalived
+   state: start
+  delegate_to: "{{ item }}"
+  with_items:
+   - "{{ groups['master'] }}"
 

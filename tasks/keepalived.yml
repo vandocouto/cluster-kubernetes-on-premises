@@ -29,8 +29,14 @@
   when: inventory_hostname in groups['master']
 
 - name: "[keepalived] - start service"
-  service:
-   name: restart keepalived
-   state: restarted
+  systemd:
+   state: started
+   name: keepalived
   when: inventory_hostname in groups['master']
+
+#- name: "[keepalived] - start service"
+#  service:
+#   name: restart keepalived
+#   state: restarted
+#  when: inventory_hostname in groups['master']
 

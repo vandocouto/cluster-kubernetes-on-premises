@@ -25,9 +25,7 @@
   systemd:
     name: keepalived
     enabled: yes
-  delegate_to: "{{ item }}"
-  with_items:
-   - "{{ groups['master'] }}"
+  when: inventory_hostname in groups['master']
 
 - name: "[keepalived] - start service"
   service:

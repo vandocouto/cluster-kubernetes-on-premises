@@ -1,5 +1,5 @@
 - name: "[worker] - kubeadm token create"
   shell: |
-   sudo kubeadm join {{ virtualip }}:6443 --token {{ admission_token }} --discovery-token-unsafe-skip-ca-verification --ignore-preflight-errors=all
+   kubeadm join {{ virtualip }}:6443 --token {{ admission_token }} --discovery-token-unsafe-skip-ca-verification --ignore-preflight-errors=all
   when: inventory_hostname in groups['worker']
   poll: 0

@@ -13,7 +13,7 @@
 - name: "[destroy] - destroy etcd"
   shell: |
    docker rm etcd -f
-   rm {{ etcd }}/docker-etcd.sh
+   rm -rf {{ etcd }}/docker-etcd.sh
    docker rm $(docker ps -qa) -f
    rm -rf {{ etcdstorage }}/*
    rm -rf /var/lib/etcd/*

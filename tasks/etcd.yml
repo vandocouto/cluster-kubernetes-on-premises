@@ -83,8 +83,6 @@
   with_items:
    - "{{ groups['etcd'] }}"
   when: dockeretcd.changed
-  register: result
-  failed_when: "'Error start etcd' in result.stdout"
   async: 300
   poll: 1
 

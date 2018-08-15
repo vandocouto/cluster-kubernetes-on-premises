@@ -31,8 +31,8 @@
 
 - name: "[keepalived] - start service"
   service:
-   name: restart keepalived
-   state: start
+   name: started keepalived
+   state: started
   delegate_to: "{{ item }}"
   with_items:
    - "{{ groups['master'] }}"

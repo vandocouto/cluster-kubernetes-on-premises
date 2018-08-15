@@ -1,3 +1,8 @@
+- name: "[master] - export kubeconfig"
+  lineinfile:
+   dest: ~/.bashrc
+   line: export KUBECONFIG=/etc/kubernetes/admin.conf
+
 - name: "sysctl - net.bridge.bridge-nf-call-iptables"
   sysctl:
    name: net.bridge.bridge-nf-call-iptables
@@ -67,6 +72,7 @@
   delegate_facts: True
   delegate_to: "{{ groups['master'][0] }}"
   poll: 0
+  ignore_errors: yes
 
 - name: "[master] - scope.yaml"
   template:
@@ -82,6 +88,7 @@
   delegate_facts: True
   delegate_to: "{{ groups['master'][0] }}"
   poll: 0
+  ignore_errors: yes
 
 - name: "[master] - dashboard.yaml"
   template:
@@ -97,9 +104,3 @@
   delegate_facts: True
   delegate_to: "{{ groups['master'][0] }}"
   poll: 0
-
-- name: "[master] - export kubeconfig"
-  lineinfile:
-   dest: ~/.bashrc
-   line: export KUBECONFIG=/etc/kubernetes/admin.conf
-  when: inventory_hostname in groups['master']

@@ -28,9 +28,8 @@
   when: inventory_hostname in groups['master']
 
 - name: "[keepalived] - start service"
-  systemd:
-   state: started
-   name: keepalived
+  shell: |
+    systemctl restart keepalived
   when: inventory_hostname in groups['master']
 
 #- name: "[keepalived] - start service"

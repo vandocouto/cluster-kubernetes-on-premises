@@ -18,7 +18,6 @@
     mode: 0644
     backup: yes
   delegate_to: "{{ item }}"
-  notify: restart keepalived
   with_items:
    - "{{ groups['master'] }}"
 

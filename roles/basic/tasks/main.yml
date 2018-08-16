@@ -1,0 +1,11 @@
+---
+- import_tasks: redhat.yml
+  tags: redhat
+  when: ansible_os_family == "RedHat"
+
+- import_tasks: ubuntu.yml
+  tags: ubuntu
+  when: ansible_os_family == "Debian"
+
+- import_tasks: configure.yml
+  tags: configure

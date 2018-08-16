@@ -1,0 +1,16 @@
+[etcd]
+18.213.132.123
+34.225.82.25
+18.207.40.247
+
+[master]
+18.213.132.123
+34.225.82.25
+
+[worker]
+35.170.132.205
+18.210.240.96
+
+[all:vars]
+ansible_ssh_user=ec2-user
+ansible_ssh_private_key_file= ~/kubernetesMaster.pem

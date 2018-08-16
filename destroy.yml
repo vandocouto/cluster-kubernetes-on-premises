@@ -1,0 +1,10 @@
+---
+- name: "roles/destroyCluster"
+  hosts: all
+  become: yes
+
+  vars_files:
+  - inventory/groups_vars/all.yml
+
+  roles:
+    - roles/destroyCluster

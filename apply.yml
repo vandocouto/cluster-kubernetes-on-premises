@@ -1,0 +1,38 @@
+---
+- name: "Hosts - tasks common for all.yml hosts"
+  hosts: all
+  become: yes
+
+  vars_files:
+  - inventory/groups_vars/all.yml
+
+  roles:
+    - roles/basic
+
+- name: "[ETCD]"
+  hosts: etcd
+  become: yes
+
+  vars_files:
+  - inventory/groups_vars/all.yml
+
+  roles:
+    - roles/etcd
+
+- name: "[MASTER]"
+  hosts: master
+  become: yes
+
+  roles:
+    - roles/master
+    - roles/keepalived
+
+- name: "[WORKER]"
+  hosts: worker
+  become: yes
+
+  vars_files:
+  - inventory/groups_vars/all.yml
+
+  roles:
+    - roles/worker

@@ -23,7 +23,7 @@ To deploy the cluster you can use:
    * kubernetes v1.11.1
    * weave v2.4.0
     
-### Step 1 - Configure file vars/main.yml
+### Step 1 - Configure file inventory/groups_vars/all.yml
 
 - Set the environment variables
 
@@ -64,7 +64,7 @@ virtualip: 192.168.56.200
 
 ### Step 2 - Inventory 
 
-- open file hosts 
+- open file inventory/hosts 
 - add ips or fqdn to etcd, master and worker.
 
     * number minimum: 3 nodes for etcd
@@ -95,7 +95,7 @@ ansible_ssh_private_key_file=~/kubernetes.pem
 ### Step 3 - Executing playbook Ansible
 
 ```bash
-ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts ./tasks/main.yml --skip-tags destroyCluster
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory/hosts apply.yml
 ```
 
 ### Display Dashboard Kubernetes
@@ -115,5 +115,5 @@ http://IP-VIP:30001
 ### Destroy Cluster Kubernetes 
 
 ```bash
-ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts ./tasks/main.yml --tags destroyCluster
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory/hosts destroy.yml
 ```

@@ -1,0 +1,29 @@
+! Configuration File for keepalived
+global_defs {
+    router_id LVS_DEVEL
+}
+vrrp_script chk_apiserver {
+    script "/etc/keepalived/check_apiserver.sh"
+    interval 2
+    weight -5
+    fall 3
+    rise 2
+}
+vrrp_instance VI_1 {
+    state {{ state }}
+    interface {{ interfacename }}
+    mcast_src_ip {{ item }}
+    virtual_router_id {{ virtual_router_id }}
+    priority 100
+    advert_int 2
+    authentication {
+        auth_type PASS
+        auth_pass {{ keeppass }}
+    }
+    virtual_ipaddress {
+        {{ virtualip }}
+    }
+    track_script {
+       chk_apiserver
+    }
+}

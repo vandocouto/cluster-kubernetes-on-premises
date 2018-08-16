@@ -1,0 +1,68 @@
+- name: "[Redhat] - update - Redhat"
+  yum: name=* state=latest
+  tags: update-redhat
+
+- name: "[Redhat] - selinux"
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: "[Redhat] - yum install packages"
+  yum: pkg={{item}} state=installed
+  with_items:
+   - wget
+   - curl
+   - yum-utils
+   - net-tools
+   - telnet
+   - keepalived
+   - http://mirror.centos.org/centos/7/extras/x86_64/Packages/container-selinux-2.66-1.el7.noarch.rpm
+  async: 1800
+  poll: 1
+  retries: 3
+  ignore_errors: yes
+
+- name: "[Redhat] - enable repository docker"
+  shell: |
+   yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+   yum makecache fast
+
+- name: "[Redhat] - install docker-ce"
+  yum: pkg={{item}} state=installed
+  with_items:
+   - docker-ce
+
+- name: "[Redhat] - repository - kubernetes"
+  template:
+   src: kubernetes.repo
+   dest: /etc/yum.repos.d/kubernetes.repo
+
+- name: "[Redhat] - update - Redhat"
+  yum: name=* state=latest
+
+- name: "[Redhat] - yum install"
+  yum: pkg={{ item }} state=installed
+  with_items:
+   - kubelet-{{ k8sversionRedhat }}
+   - kubeadm-{{ k8sversionRedhat }}
+   - kubectl-{{ k8sversionRedhat }}
+  async: 1800
+  poll: 1
+  retries: 3
+  tags: installkube
+
+- name: "[Redhat] - enable service"
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+  with_items:
+   - kubelet
+   - docker
+
+- name: "[Redhat] - start service"
+  service:
+   name: "{{ item }}"
+   state: started
+  with_items:
+   - kubelet
+   - docker

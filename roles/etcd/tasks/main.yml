@@ -1,0 +1,95 @@
+- name: "[etcd] - files - cfssl"
+  template:
+   src: "{{ item.src }}"
+   dest: "{{ item.dest }}"
+   owner: root
+   mode: 644
+  with_items:
+   - {dest: "{{ cfssl }}",ca-config.json,       src: ca-config.json}
+   - {dest: "{{ cfssl }}",ca-csr.json,          src: ca-csr.json}
+   - {dest: "{{ cfssl }}",kubernetes-csr.json,  src: kubernetes-csr.json}
+  delegate_facts: True
+  delegate_to: "{{ groups['etcd'][0] }}"
+
+- name: "[etcd] - cfssl - ca"
+  shell: /usr/local/bin/cfssl gencert -initca "{{cfssl}}"/ca-csr.json | /usr/local/bin/cfssljson -bare {{cfssl}}/ca
+  delegate_facts: True
+  delegate_to: "{{ groups['etcd'][0] }}"
+
+- name: "[etcd] - certs - ssl"
+  shell: |
+    cd {{ cfssl }}
+    /usr/local/bin/cfssl gencert \
+    -ca=ca.pem \
+    -ca-key=ca-key.pem \
+    -config=ca-config.json \
+    -hostname={{ groups['etcd']|join(',') }},127.0.0.1,kubernetes.default \
+    -profile=kubernetes kubernetes-csr.json | /usr/local/bin/cfssljson -bare kubernetes
+  delegate_facts: True
+  delegate_to: "{{ groups['etcd'][0] }}"
+
+- name: "[etcd] - fetch - files kubernetes csr key pem"
+  fetch:
+   src: "{{ cfssl }}/{{ item.kaypair }}"
+   dest: /tmp/fetched
+   mode: 644
+  with_items:
+   - {kaypair: "kubernetes.csr"}
+   - {kaypair: "kubernetes-key.pem"}
+   - {kaypair: "kubernetes.pem"}
+   - {kaypair: "ca.pem"}
+  delegate_facts: True
+  delegate_to: "{{ groups['etcd'][0] }}"
+
+- name: "[etcd] - copy keypairs"
+  template:
+   src: /tmp/fetched/{{ groups['etcd'][0] }}/etc/cfssl/{{ item.kaypair }}
+   dest: "{{cfssl}}"
+   mode: 0644
+  with_items:
+   - {kaypair: "kubernetes.csr"}
+   - {kaypair: "kubernetes-key.pem"}
+   - {kaypair: "kubernetes.pem"}
+   - {kaypair: "ca.pem"}
+
+- name: "[etcd] - create directory"
+  file:
+   path: "{{ item.dir }}"
+   state: directory
+   owner: root
+   group: root
+   mode: 0755
+  with_items:
+   - {dir: "{{ etcd }}" }
+   - {dir: "{{ etcdstorage }}" }
+
+- name: "[etcd] - docker-etcd.sh"
+  template:
+   src: dockeretcd.j2
+   dest: "{{ etcd }}/docker-etcd.sh"
+   owner: root
+   group: root
+   mode: 0755
+  delegate_to: "{{ item }}"
+  with_items:
+   - "{{ groups['etcd'] }}"
+  register: dockeretcd
+
+- name: "[etcd] - start etcd"
+  shell: |
+   sleep 10
+   /etc/etcd/docker-etcd.sh
+  delegate_to: "{{ item }}"
+  with_items:
+   - "{{ groups['etcd'] }}"
+  when: dockeretcd.changed
+  async: 300
+  poll: 1
+
+- name: "[etcd] - check cluster etcd"
+  shell: curl -L http://"{{ item }}":2379/health
+  delegate_to: "{{ item }}"
+  with_items:
+   - "{{ groups['etcd'] }}"
+  register: result
+  failed_when: "'true' not in result.stdout"

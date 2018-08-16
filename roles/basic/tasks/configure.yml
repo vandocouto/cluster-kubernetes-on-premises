@@ -1,0 +1,73 @@
+- name: "install firewalld"
+  apt: name=firewalld state=present
+  when: ansible_os_family == "Debian"
+
+- name: "be sure firewalld is installed"
+  yum: name=firewalld state=installed
+  when: ansible_os_family == "RedHat"
+
+- name: "be sure firewalld is disabled"
+  systemd: name=firewalld enabled=no
+
+- name: "be sure iptables is disabled"
+  systemd: name=iptables enabled=no
+  ignore_errors: yes
+
+- name: "be sure firewalld is stopped"
+  systemd: name=firewalld state=stopped
+  ignore_errors: yes
+
+- name: "be sure iptables is stoppped"
+  service: name=iptables state=stopped
+  ignore_errors: yes
+
+- name: "Remove swapfile from /etc/fstab"
+  mount:
+    name: swap
+    fstype: swap
+    state: absent
+
+- name: "Disable swap"
+  command: swapoff -a
+  when: ansible_swaptotal_mb > 0
+
+- name: "Changing perm of /etc/rc.local +x"
+  file:
+   path: /etc/rc.d/rc.local
+   mode: a+x
+
+- name: "create directory - /etc/cfssl"
+  file:
+   path: "{{ cfssl }}"
+   state: directory
+   owner: root
+   group: root
+   mode: 0755
+
+- name: "download cfssl_linux-amd64"
+  get_url:
+   url: https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
+   dest: /usr/local/bin/cfssl
+   mode: 0755
+  async: 1800
+  poll: 1
+
+- name: "download cfssljson_linux-amd644"
+  get_url:
+   url: https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+   dest: /usr/local/bin/cfssljson
+   mode: 0755
+  async: 1800
+  poll: 1
+
+- name: "check if ctop exist"
+  stat:
+    path: /usr/local/bin/ctop
+  register: ctop
+
+- name: "install ctop"
+  get_url:
+   url: https://github.com/bcicen/ctop/releases/download/v0.6.0/ctop-0.6.0-linux-amd64
+   dest: /usr/local/bin/ctop
+   mode: 0755
+  when: not ctop.stat.exists

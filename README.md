@@ -28,9 +28,9 @@ To deploy the cluster you can use:
 - Set the environment variables
 
 ```bash
-# certificate cfssl -SSL
+# certificate cfssl
 expiry: 24000h
-corp: corporation
+corp: kubernetes
 cfssl: /etc/cfssl
 
 # ips (do not change)
@@ -42,7 +42,7 @@ ips-worker: "{{groups['worker']|join(',')}}"
 k8sversionUbuntu: 1.11.1-00
 k8sversionRedhat: 1.11.1-0*
 podSubnet: 10.0.0.0/16
-# NOTE: create TOKEN - run command
+# create TOKEN - run command
 # python -c 'import random; print "%0x.%0x" % (random.SystemRandom().getrandbits(3*8), random.SystemRandom().getrandbits(
   #8*8))'
 admission_token: 3e6035.191009b3012b14db
@@ -52,13 +52,11 @@ etcdversion: v3.3.8
 etcd: /etc/etcd
 etcdstorage: /var/lib/etcd-cluster
 
-# NOTE: Configure keepalived
+# keepalived
 interfacename: enp0s3
-# Default
-priority: 51
+virtual_router_id: "{{ 100 | random }}"
 keeppass: p7S5gkT719R
 state: MASTER
-# IP VIP
 virtualip: 192.168.56.200
 ```
 
